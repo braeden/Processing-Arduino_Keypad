@@ -8,14 +8,17 @@ import ddf.minim.ugens.*;
 
 import processing.serial.*;
 Minim minim;
-AudioPlayer song;
+AudioSample[] notes = new AudioSample[12];
 Serial port;
 
 void setup() { 
- 
+  
   size(200, 200); 
   frameRate(60);
   minim = new Minim(this);
+  for(int i = 0; i <= 11; i++) {
+    notes[i] = minim.loadSample("note_" + i + ".wav");
+  }
   //port = new Serial(this, Serial.list()[0], 9600);
 }
 
@@ -27,19 +30,9 @@ void draw() {
     for(int i = 0; i <= 11; i++) { //2^11 = 2048 which is the limit
       int a = (int) Math.pow(2,i); //Raises 2 to the i th power and makes ints instead of doubles
       if (key_int == a) { //Checks if the 2^i is the same as the keyboard generated number
-        String name = "note_" + i; //Generates file names starting with "note_0"
-        song = minim.loadFile(name + ".wav"); //Loads it and appends .wav extension
-        song.play(); //Plays the note
+        notes[i].trigger();
       }
     }
-    //Error:
-    /*
-    ==== JavaSound Minim Error ====
-    ==== Couldn't open the line: line with format PCM_SIGNED 44100.0 Hz, 16 bit, stereo, 4 bytes/frame, little-endian not supported.
-    
-    === Minim Error ===
-    === Couldn't load the file note_4.wav
-    */
   }
 }
 
