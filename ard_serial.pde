@@ -36,22 +36,6 @@ void draw() {
     }
   }
 }
-
-// Simulates readBytesFromSerial sending the integers in pattern at 1000 ms intervals
-int[] pattern = {1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 3, 5, 6, 7}; // multi press pattern {3, 5, 6, 7, 9, 10, 11, 12, 1
-int stage = 0, t = millis(), delay = 1000;
-int simulateBytesFromSerial() {
-  int data;
-  if (millis() - t > delay) { // if delay has passed
-    data = pattern[stage++]; // select next sound from pattern
-    if (stage == pattern.length) stage = 0;
-    t = millis();
-  } else {
-    data = -1; // otherwise simulate no data
-  }
-  return(data);
-}
-
 // Reads up to four bytes from the serial port and returns them as a single integer; Returns -1 if serial port has no data
 int readBytesFromSerial() {
   byte[] data = port.readBytes();
