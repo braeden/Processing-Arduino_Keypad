@@ -25,19 +25,20 @@ void setup() {
 void draw() { 
   background(255);
  
-  int key_int = simulateBytesFromSerial(); // readBytesFromSerial();
-  if (key_int >= 0) {
-    for(int i = 0; i <= 11; i++) { //2^11 = 2048 which is the limit
-      int a = (int) Math.pow(2,i); //Raises 2 to the i th power and makes ints instead of doubles
-      if (key_int == a) { //Checks if the 2^i is the same as the keyboard generated number
-        notes[i].trigger();
+  int key_int = simulateBytesFromSerial(); //readBytesFromSerial();
+  if (key_int >= 0) { //While the number given from readBytesFromSerial is > 0 (finished subtracting)
+    for (int j = 11; j >= 0; j--) { //Iterate down with j
+      int b = (int) Math.pow(2,j);  //Raise 2 to the jth power
+      if (key_int >= b) { //If the Raised number is less than the Bytes from serial num (and start subtracting) 
+        key_int -= b; //Subtract them and create the new key_int
+        notes[j].trigger(); //Play the sounds in the current iteration
       }
     }
   }
 }
 
 // Simulates readBytesFromSerial sending the integers in pattern at 1000 ms intervals
-int[] pattern = {1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048}; // multi press pattern {3, 5, 6, 7, 9, 10, 11, 12, 1
+int[] pattern = {1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 3, 5, 6, 7}; // multi press pattern {3, 5, 6, 7, 9, 10, 11, 12, 1
 int stage = 0, t = millis(), delay = 1000;
 int simulateBytesFromSerial() {
   int data;
